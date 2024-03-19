@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "code": 600,
+    "status": false,
+    "message": "Permission denied"
+  },
+  {
+    "id": 1,
+    "code": 601,
+    "status": true,
+    "message": "Operation success"
+  },
+  {
+    "id": 2,
+    "code": 602,
+    "status": false,
+    "message": "Password does not match"
+  },
+  {
+    "id": 3,
+    "code": 603,
+    "status": false,
+    "message": "User with this email already exists"
+  },
+  {
+    "id": 4,
+    "code": 604,
+    "status": false,
+    "message": "User with this username already exists"
+  },
+  {
+    "id": 4,
+    "code": 604,
+    "status": false,
+    "message": "Faild to perform operation"
+  }
+]

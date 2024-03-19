@@ -1,0 +1,6 @@
+aerich==0.7.2
+asyncpg==0.29.0
+fastapi==0.110.0
+strawberry-graphql==0.220.0
+tortoise-orm==0.20.0
+uvicorn==0.28.1

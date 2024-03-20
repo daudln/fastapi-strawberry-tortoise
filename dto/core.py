@@ -1,13 +1,12 @@
 from uuid import UUID
+
 import strawberry
-from strawberry.field import StrawberryField as Field
-from strawberry.experimental import pydantic
-from pydantic import EmailStr, BaseModel
+from pydantic import BaseModel, EmailStr
 from tortoise.contrib.pydantic.creator import pydantic_model_creator
 
 from core.models import User
 from dto.response import ResponseObject
-
+from utils.auth import Token
 
 
 class UserModel(BaseModel):
@@ -17,10 +16,6 @@ class UserModel(BaseModel):
     password_confirm: str
     
 
-# @pydantic.input(model=UserModel, all_fields=True)
-# class UserInput:
-#     pass
-    
 @strawberry.input
 class UserInput:
     name: str
@@ -28,7 +23,9 @@ class UserInput:
     password: str
     password_confirm: str
 
+
 GetUser = pydantic_model_creator(User, name="UserGet", exclude=("password", "password_confirm"))
+
 
 @strawberry.type
 class UserObject:
@@ -41,3 +38,14 @@ class UserObject:
 class UserResponseObject:
     response: ResponseObject
     data: UserObject | None = None
+
+
+@strawberry.input
+class LoginInput:
+    username: str
+    password: str
+    
+
+@strawberry.experimental.pydantic.type(model=Token, all_fields=True)
+class TokenObject:
+    response: ResponseObject

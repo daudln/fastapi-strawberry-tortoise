@@ -15,24 +15,48 @@
     "id": 2,
     "code": 602,
     "status": false,
-    "message": "Password does not match"
+    "message": "Invalid email address"
   },
   {
     "id": 3,
     "code": 603,
     "status": false,
-    "message": "User with this email already exists"
+    "message": "Password does not match"
   },
   {
     "id": 4,
     "code": 604,
+    "status": false,
+    "message": "Provide strong password with at least 8 characters with uppercase, lowercase, number and special character"
+  },
+  {
+    "id": 5,
+    "code": 605,
+    "status": false,
+    "message": "User with this email/username already exists"
+  },
+  {
+    "id": 6,
+    "code": 606,
     "status": false,
     "message": "User with this username already exists"
   },
   {
-    "id": 4,
-    "code": 604,
+    "id": 7,
+    "code": 607,
     "status": false,
-    "message": "Faild to perform operation"
+    "message": "Invalid username"
+  },
+  {
+    "id": 8,
+    "code": 608,
+    "status": false,
+    "message": "Invalid phone number"
+  },
+  {
+    "id": 9,
+    "code": 609,
+    "status": false,
+    "message": "Incorrect username or password"
   }
 ]

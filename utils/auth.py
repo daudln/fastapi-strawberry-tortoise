@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from typing import Annotated
 from uuid import UUID
 
 import bcrypt
@@ -7,10 +6,10 @@ import jwt
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from dotenv import dotenv_values
-from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt import PyJWTError as JWTError
 from pydantic import BaseModel
+from strawberry.types import Info
 
 from core.models import User
 
@@ -65,6 +64,27 @@ def load_rsa_private_key_from_pem():
 private_key = load_rsa_private_key_from_pem()
 
 
+def load_rsa_public_key_from_private_key(private_key_bytes):
+    private_key = serialization.load_pem_private_key(
+        private_key_bytes,
+        password=None,
+        backend=default_backend(),
+    )
+
+    public_key = private_key.public_key()
+    public_key_bytes = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo,
+    )
+
+    return public_key_bytes
+
+
+private_key_bytes = load_rsa_private_key_from_pem()
+
+public_key_bytes = load_rsa_public_key_from_private_key(private_key_bytes)
+
+
 def get_password_hash(password: str):
     return bcrypt.hashpw(
         password.encode("utf-8"), salt=bcrypt.gensalt(prefix=b"2a")
@@ -77,10 +97,10 @@ def verify_password(plain_password: str, hashed_password: str):
     )
 
 
-async def get_user(username: str):
+async def get_user(username: str) -> UserModel:
     user = await User.filter(name=username).first()
     if user:
-        return UserModel(username=user.name, email=user.email, unique_id=user.unique_id)
+        return UserModel(name=user.name, email=user.email, unique_id=user.unique_id)
 
 
 async def authenticate_user(username: str, password: str):
@@ -103,32 +123,22 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+async def get_current_user(info: Info):
+    token = info.context.get("request").headers.get("Authorization").split(" ")[1]
+    if not token:
+        return None
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
+        payload = jwt.decode(token, public_key_bytes, algorithms=[ALGORITHM])
+        username: str = payload.get("name")
         if username is None:
-            raise credentials_exception
+            return None
         token_data = TokenData(username=username)
     except JWTError:
-        raise credentials_exception
-    user = get_user(username=token_data.username)
+        return None
+    user = await get_user(username=token_data.username)
     if user is None:
-        raise credentials_exception
+        raise None
     return user
-
-
-async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)]
-):
-    if not current_user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
 
 
 async def login_for_access_token(username: str, password: str) -> Token | None:

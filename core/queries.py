@@ -1,12 +1,25 @@
 import strawberry
 from strawberry.types import Info
 
+from builder.core import CoreBuider
+from dto.core import UserObject
+from dto.response import Response
+from utils.auth import get_current_user
+
 @strawberry.type
 class Query:
     @strawberry.field
-    def hello(self, info:Info, name: str|None = None) -> str:
+    async def hello(self, info:Info, name: str|None = None) -> str:
         return f"Hello {name or 'world'}"
     
     @strawberry.field
-    def get_users(self, info:Info, name: str|None = None) -> str:
+    async def get_users(self, info:Info, name: str|None = None) -> str:
         return f"Hello {name or 'world'}"
+    
+    @strawberry.field
+    async def get_me(self, info:Info) -> Response[UserObject]:
+        user = await get_current_user(info)
+        if not user:
+            return Response.get_response(response_id=10)
+        
+        return Response.get_response(response_id=1, data=CoreBuider.get_user_data(user.unique_id))

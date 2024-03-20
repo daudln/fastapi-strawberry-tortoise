@@ -58,5 +58,11 @@
     "code": 609,
     "status": false,
     "message": "Incorrect username or password"
+  },
+  {
+    "id": 10,
+    "code": 610,
+    "status": false,
+    "message": "Invalid or expired token"
   }
 ]

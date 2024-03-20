@@ -1,10 +1,8 @@
 import json
+import strawberry
 from typing import Generic, TypeVar
 
-import strawberry
-
-T = TypeVar('T', bound=strawberry.type)
-
+TData = TypeVar('TData')
 
 @strawberry.type
 class ResponseObject:
@@ -12,7 +10,7 @@ class ResponseObject:
     code: int
     status: bool
     message: str
-
+    
     @classmethod
     def get_response(cls, response_id:int):
         with open('assets/response_codes.json', 'r') as file:
@@ -25,29 +23,19 @@ class ResponseObject:
             status = matching_response['status']
             return cls(id=response_id, code=code, status=status, message=message)
         
-        return cls(id=-1, status=False, message='Invalid response ID')
+        return cls(id=-1, code=0000, status=False, message='Invalid response ID')
 
 
-class Response(Generic[T]):
-    def __init__(self, data: T, status: bool = True, message: str = "Success"):
+@strawberry.type
+class Response(Generic[TData]):
+    response: ResponseObject
+    data: TData | None
+
+    def __init__(self, response: ResponseObject, data: TData|None = None):
+        self.response = response
         self.data = data
-        self.status = status
-        self.message = message
 
-    @staticmethod
-    def from_data(data: T, status: bool = True, message: str = "Success") -> 'Response':
-        return Response(data=data, status=status, message=message)
-
-    @staticmethod
-    def from_error(message: str = "Error") -> 'Response':
-        return Response(status=False, message=message)
-
-    def to_dict(self):
-        return {
-            'status': self.status,
-            'message': self.message,
-            'data': strawberry.asdict(self.data)
-        }
-
-def create_response_object(data: T, status: bool = True, message: str = "Success") -> ResponseObject:
-    return ResponseObject(data=data, status=status, message=message)
+    @classmethod
+    def get_response(cls, response_id:int, data: TData|None = None)-> 'Response[TData]':
+        response = ResponseObject.get_response(response_id)
+        return cls(data=data, response=response)

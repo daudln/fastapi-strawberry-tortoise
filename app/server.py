@@ -7,6 +7,7 @@ from tortoise.contrib.fastapi import register_tortoise
 
 from settings.database import ORM
 
+from core.routes import core_routes
 from .main_schema import graphql_app
 
 CONF = dotenv_values(".env")
@@ -24,6 +25,7 @@ app.add_middleware(
 )
 
 app.include_router(graphql_app, prefix="/api")
+app.include_router(core_routes, prefix="/api")
 
 register_tortoise(
     app,

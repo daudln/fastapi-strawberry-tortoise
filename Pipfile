@@ -10,6 +10,7 @@ strawberry-graphql = "*"
 tortoise-orm = {version = "*", extras = ["asyncpg"]}
 aerich = "*"
 python-dotenv = "==1.0.1"
+pydantic = {version = "*", extras = ["email"]}
 
 [dev-packages]
 

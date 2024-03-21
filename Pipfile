@@ -14,8 +14,10 @@ pydantic = {version = "*", extras = ["email"]}
 pyjwt = "*"
 bcrypt = "*"
 cryptography = "*"
+fastapi-mail = "*"
 
 [dev-packages]
+black = "*"
 
 [requires]
 python_version = "3.11"

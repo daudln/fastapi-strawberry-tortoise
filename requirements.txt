@@ -6,9 +6,10 @@ cryptography==42.0.5
 email_validator==2.1.1
 fastapi==0.110.0
 fastapi-mail==1.4.1
+fastapi-pagination==0.12.21
 pydantic==2.6.4
 PyJWT==2.8.0
 python-dotenv==1.0.1
-strawberry-graphql==0.220.0
+strawberry-graphql==0.221.1
 tortoise-orm==0.20.0
 uvicorn==0.29.0

@@ -1,3 +1,36 @@
-// {
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5430,
+            "driver": "PostgreSQL",
+            "name": "FatsAPIDB",
+            "database": "fastapi-db",
+            "username": "postgres",
+            "password": "postgres"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "FastAPIDB",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "postgres"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5430,
+            "driver": "PostgreSQL",
+            "name": "postgres",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "postgres"
+        }
+    ]
+} // {
 //     "python.analysis.typeCheckingMode": "basic"
 // }

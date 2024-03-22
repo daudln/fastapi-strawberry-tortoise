@@ -25,17 +25,38 @@ class ResponseObject:
         
         return cls(id=-1, code=0000, status=False, message='Invalid response ID')
 
+@strawberry.type
+class PageObject:
+    number: int
+    per_page: int
+    current_page: int
+    last_page: int
+    has_nex_page: bool
+
+    def __init__(self, number: int, per_page: int, current_page: int, last_page: int, has_nex_page: bool):
+        self.number = number
+        self.per_page = per_page
+        self.current_page = current_page
+        self.last_page = last_page
+        self.has_nex_page = has_nex_page
+        
+    @classmethod
+    def get_page(cls, page_obj):
+        return cls(number=page_obj.number, per_page=page_obj.per_page, current_page=page_obj.current_page, last_page=page_obj.last_page, has_more_pages=page_obj.has_more_pages)
+
 
 @strawberry.type
 class Response(Generic[TData]):
     response: ResponseObject
+    page: PageObject | None
     data: TData | None
 
-    def __init__(self, response: ResponseObject, data: TData|None = None):
+    def __init__(self, response: ResponseObject, page:PageObject|None=None, data: TData|None = None):
         self.response = response
+        self.page = page
         self.data = data
 
     @classmethod
-    def get_response(cls, response_id:int, data: TData|None = None)-> 'Response[TData]':
+    def get_response(cls, response_id:int, data: TData|None = None, page:PageObject|None = None)-> 'Response[TData]':
         response = ResponseObject.get_response(response_id)
-        return cls(data=data, response=response)
+        return cls(response=response, page=page, data=data) 

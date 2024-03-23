@@ -29,14 +29,16 @@ conf = ConnectionConfig(
 )
 
 
-async def send_mail(to: list[EmailSchema], body: dict[str, Any], subject: str, template_name: str) -> JSONResponse:
+async def send_mail(
+    to: list[EmailSchema], body: dict[str, Any], subject: str, template_name: str
+) -> JSONResponse:
     message = MessageSchema(
         subject=subject,
         recipients=to,
         subtype=MessageType.html,
         template_body=body,
     )
-    
+
     body.update({"year": datetime.now().year})
 
     fm = FastMail(conf)

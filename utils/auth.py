@@ -86,15 +86,13 @@ public_key_bytes = load_rsa_public_key_from_private_key(private_key_bytes)
 
 
 def get_password_hash(password: str):
-    return bcrypt.hashpw(
-        password.encode("utf-8"), salt=bcrypt.gensalt(prefix=b"2a")
-    ).decode("utf-8")
+    return bcrypt.hashpw(password.encode("utf-8"), salt=bcrypt.gensalt(prefix=b"2a")).decode(
+        "utf-8"
+    )
 
 
 def verify_password(plain_password: str, hashed_password: str):
-    return bcrypt.checkpw(
-        plain_password.encode("utf-8"), hashed_password.encode("utf-8")
-    )
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 
 async def get_user(username: str) -> UserModel:
@@ -126,15 +124,15 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 async def get_current_user(info: Info):
     if "Authorization" not in info.context.get("request").headers:
         return None
-    
+
     token_type, token = info.context.get("request").headers.get("Authorization").split(" ")
-    
+
     if token_type != "JWT":
         return None
-    
+
     if not token:
         return None
-    
+
     try:
         payload = jwt.decode(token, public_key_bytes, algorithms=[ALGORITHM])
         username: str = payload.get("name")
@@ -143,9 +141,9 @@ async def get_current_user(info: Info):
         token_data = TokenData(username=username)
     except JWTError:
         return None
-    
+
     user = await get_user(username=token_data.username)
-    
+
     if user is None:
         return None
     return user

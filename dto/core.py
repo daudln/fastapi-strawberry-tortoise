@@ -14,7 +14,7 @@ class UserModel(BaseModel):
     email: EmailStr
     password: str
     password_confirm: str
-    
+
 
 @strawberry.input
 class UserInput:
@@ -44,7 +44,7 @@ class UserResponseObject:
 class LoginInput:
     username: str
     password: str
-    
+
 
 @strawberry.experimental.pydantic.type(model=Token, all_fields=True)
 class TokenObject:

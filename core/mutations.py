@@ -14,32 +14,37 @@ from utils.validators import validate_email, validate_password
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    async def create_user_mutation(self, info:Info,  input: UserInput) -> Response[UserObject]:
+    async def create_user_mutation(self, info: Info, input: UserInput) -> Response[UserObject]:
         if not validate_email(input.email):
             return Response.get_response(response_id=2)
-        
+
         if not validate_password(input.password):
             return Response.get_response(response_id=4)
-        
+
         if input.password != input.password_confirm:
             return Response.get_response(response_id=3)
-        
+
         if await User.filter(name=input.name, email=input.email).exists():
             return Response.get_response(response_id=5)
-        
-        mail = await send_mail(to=[input.email], body={"name": input.name}, subject="Welcome", template_name="emails/welcome.html")
-        
+
+        mail = await send_mail(
+            to=[input.email],
+            body={"name": input.name},
+            subject="Welcome",
+            template_name="emails/welcome.html",
+        )
+
         if mail.status_code != 200:
             return Response.get_response(response_id=6)
-        
+
         hashed_password = get_password_hash(input.password)
         user = await User.create(name=input.name, email=input.email, password=hashed_password)
         return Response.get_response(response_id=1, data=CoreBuider.get_user_data(user.unique_id))
-    
+
     @strawberry.mutation
-    async def login_mutation(self, info:Info, input: LoginInput) -> Response[TokenObject]:
+    async def login_mutation(self, info: Info, input: LoginInput) -> Response[TokenObject]:
         token = await login_for_access_token(input.username, input.password)
         if token:
             return Response.get_response(response_id=1, data=token)
-        
+
         return Response.get_response(response_id=9)

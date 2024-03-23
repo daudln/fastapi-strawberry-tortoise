@@ -107,7 +107,6 @@ class Page(Sequence):
         # TODO... implement logic for item access (optional)
         return self.object_list[index]
 
-
     @property
     def has_next(self):
         return self.number < self.paginator.num_pages

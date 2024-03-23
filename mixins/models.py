@@ -15,5 +15,5 @@ class BaseModel(Model):
         abstract = True
 
 
-class NameMixin():
+class NameMixin:
     name = fields.CharField(max_length=255)

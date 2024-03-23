@@ -60,19 +60,17 @@ class PageObject:
 @strawberry.type
 class Response(Generic[TData]):
     response: ResponseObject
-    page: PageObject | None
     data: TData | None
 
-    def __init__(
-        self, response: ResponseObject, page: PageObject | None = None, data: TData | None = None
-    ):
+    def __init__(self, response: ResponseObject, data: TData | None = None):
         self.response = response
-        self.page = page
         self.data = data
 
     @classmethod
     def get_response(
-        cls, response_id: int, data: TData | None = None, page: PageObject | None = None
+        cls,
+        response_id: int,
+        data: TData | None = None,
     ) -> "Response[TData]":
         response = ResponseObject.get_response(response_id)
-        return cls(response=response, page=page, data=data)
+        return cls(response=response, data=data)

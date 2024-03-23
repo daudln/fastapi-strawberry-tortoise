@@ -6,7 +6,6 @@ from builder.core import CoreBuider
 from core.models import User
 from dto.core import LoginInput, TokenObject, UserInput, UserObject
 from dto.response import Response
-from utils.mail import send_mail
 from utils.auth import get_password_hash, login_for_access_token
 from utils.validators import validate_email, validate_password
 
@@ -26,16 +25,6 @@ class Mutation:
 
         if await User.filter(name=input.name, email=input.email).exists():
             return Response.get_response(response_id=5)
-
-        mail = await send_mail(
-            to=[input.email],
-            body={"name": input.name},
-            subject="Welcome",
-            template_name="emails/welcome.html",
-        )
-
-        if mail.status_code != 200:
-            return Response.get_response(response_id=6)
 
         hashed_password = get_password_hash(input.password)
         user = await User.create(name=input.name, email=input.email, password=hashed_password)

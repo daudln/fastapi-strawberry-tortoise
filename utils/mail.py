@@ -6,6 +6,7 @@ from dotenv import dotenv_values
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 from pydantic import BaseModel, EmailStr
 from starlette.responses import JSONResponse
+from fastapi.background import BackgroundTasks
 
 CONF = dotenv_values(".env")
 

@@ -1,69 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to </title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f2f2f2;
-    }
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 30px;
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .header h1 {
-      font-size: 24px;
-      margin: 0;
-      color: #333;
-    }
-    .header img {
-      width: 100px;
-    }
-    .content {
-      line-height: 1.5;
-    }
-    .content p {
-      margin-bottom: 15px;
-      color: #777;
-    }
-    .content a {
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      color: #aaa;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>Welcome to System Name!</h1>
-      <img src="[Image URL]" alt="Logo"> </div>
-      {% block content %}
-        
-      {% endblock content %}
-    
-    <div class="footer">
-      <p>&copy; {{year}} Name. All rights reserved.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+      }
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        font-size: 24px;
+        margin: 0;
+        color: #333;
+      }
+      .header img {
+        width: 100px;
+      }
+      .content {
+        line-height: 1.5;
+      }
+      .content p {
+        margin-bottom: 15px;
+        color: #777;
+      }
+      .content a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #aaa;
+      }
+
+      .activate-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30%;
+      }
+      .btn {
+        appearance: button;
+        backface-visibility: hidden;
+        background-color: #405cf5;
+        border-radius: 6px;
+        border-width: 0;
+        box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset,
+          rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-family: -apple-system, system-ui, "Segoe UI", Roboto,
+          "Helvetica Neue", Ubuntu, sans-serif;
+        font-size: 100%;
+        height: 44px;
+        line-height: 1.15;
+        margin: 12px 0 0;
+        outline: none;
+        overflow: hidden;
+        padding: 0 25px;
+        position: relative;
+        text-align: center;
+        text-transform: none;
+        transform: translateZ(0);
+        transition: all 0.2s, box-shadow 0.08s ease-in;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        width: 100%;
+      }
+
+      .btn:disabled {
+        cursor: default;
+      }
+
+      .btn:focus {
+        box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset,
+          rgba(50, 50, 93, 0.2) 0 6px 15px 0, rgba(0, 0, 0, 0.1) 0 2px 2px 0,
+          rgba(50, 151, 211, 0.3) 0 0 0 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Welcome to System Name!</h1>
+        <img src="[Image URL]" alt="Logo" />
+      </div>
+      {% block content %} {% endblock content %}
+
+      <div class="footer">
+        <p>&copy; {{year}} Name. All rights reserved.</p>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

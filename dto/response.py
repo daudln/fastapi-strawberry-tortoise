@@ -1,6 +1,7 @@
 import json
-import strawberry
 from typing import Generic, TypeVar
+
+import strawberry
 
 TData = TypeVar("TData")
 

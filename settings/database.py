@@ -11,6 +11,7 @@ ORM = {
             "models": [
                 "aerich",
                 "core.models",
+                "authentication.models",
             ]
         }
     },

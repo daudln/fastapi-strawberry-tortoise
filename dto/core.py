@@ -49,3 +49,8 @@ class LoginInput:
 @strawberry.experimental.pydantic.type(model=Token, all_fields=True)
 class TokenObject:
     response: ResponseObject
+
+
+@strawberry.input
+class ActivateUserInput:
+    token: str

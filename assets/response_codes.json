@@ -64,5 +64,11 @@
     "code": 610,
     "status": false,
     "message": "Invalid or expired token"
+  },
+  {
+    "id": 11,
+    "code": 611,
+    "status": false,
+    "message": "This token has been used"
   }
 ]

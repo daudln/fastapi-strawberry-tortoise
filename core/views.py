@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Sequence
-from starlette_admin import BaseModelView
-from starlette_admin import IntegerField, StringField, TagsField
+
 from starlette.requests import Request
+from starlette_admin import BaseModelView, IntegerField, StringField, TagsField
 
 
 class UserView(BaseModelView):
@@ -13,7 +13,7 @@ class UserView(BaseModelView):
         StringField("email"),
         TagsField("is_active"),
     ]
-    
+
     async def count(self, request: Request):
         return await self.model.all().count()
 
@@ -39,8 +39,15 @@ class ProfileView(BaseModelView):
 
     async def count(self, request: Request):
         return await self.model.all().count()
-    
-    async def find_all(self, request: Request, skip: int = 0, limit: int = 100, where: Dict[str, Any] | str | None = None, order_by: List[str] | None = None) -> Sequence[Any]:
+
+    async def find_all(
+        self,
+        request: Request,
+        skip: int = 0,
+        limit: int = 100,
+        where: Dict[str, Any] | str | None = None,
+        order_by: List[str] | None = None,
+    ) -> Sequence[Any]:
         return await super().find_all(request, skip, limit, where, order_by)
 
     async def find_one(self, request: Request, pk: int) -> Any:

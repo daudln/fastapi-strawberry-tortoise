@@ -29,7 +29,7 @@ register_tortoise(
     app,
     config=ORM,
     add_exception_handlers=True,
-    generate_schemas=False if DEBUG else True,
+    generate_schemas=not DEBUG,
 )
 
 add_pagination(app)

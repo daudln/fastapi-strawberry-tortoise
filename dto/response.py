@@ -2,6 +2,8 @@ import json
 from typing import Generic, TypeVar
 
 import strawberry
+from fastapi_pagination import Page
+from fastapi_pagination.ext.tortoise import paginate
 
 TData = TypeVar("TData")
 

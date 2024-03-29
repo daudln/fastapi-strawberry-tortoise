@@ -39,7 +39,3 @@ async def get_paginated_data(
     data = [builder_function(getattr(obj, lookup)) for obj in page_obj]
     page = Page.page(paginated_data.page(page_number))
     return ResponseObject.get_response(id=1), page, data
-    # page_obj = paginated_data.page(page_number)
-    # data = [builder_function(getattr(obj, lookup)) for obj in page_obj]
-    # page = Page.page(paginated_data.page(page_number))
-    # return await info.return_type(response=ResponseObject.get_response(id=1), page=page, data=data)

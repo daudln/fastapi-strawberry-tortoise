@@ -35,7 +35,7 @@ class Mutation:
             to=[user.email],
             body={
                 "name": user.name,
-                "activation_url": f"http://localhost:8000/{str(activation_token.unique_id)}",
+                "activation_url": f"http://localhost:8000/{activation_token.unique_id!s}",
             },
             subject="Welcome to Task Manager",
             template_name="emails/welcome.html",

@@ -3,9 +3,220 @@ tortoise_orm = "settings.database.ORM"
 location = "./migrations"
 src_folder = "./."
 
-[tool.black]
-line-length = 100
-
 [tool.isort]
 profile = "black"
 line_length = 100
+
+[tool.poetry]
+name = "fastapi-strawberry-graphql"
+version = "0.1.0"
+description = "FastAPI + Strawberry GraphQL + JWT Authentication + Tortoise ORM"
+authors = ["daudln <daudnamayala@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aerich = "0.7.2"
+asyncpg = "0.29.0"
+bcrypt = "4.1.2"
+cryptography = "42.0.5"
+fastapi = "0.110.0"
+fastapi-mail = "1.4.1"
+fastapi-pagination = "0.12.21"
+pyjwt = "2.8.0"
+python-dotenv = "1.0.1"
+strawberry-graphql = "0.221.1"
+tortoise-orm = "0.20.0"
+uvicorn = "0.29.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+ruff = "^0.3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+fix = true
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "tests/codegen/snapshots"
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # https://github.com/astral-sh/ruff/pull/4427
+    # equivalent to keep-runtime-typing
+    "UP006",
+    "UP007",
+
+    "TID252",
+    # we use asserts in tests and to hint mypy
+    "S101",
+    "S102",
+    "S104",
+    "S324",
+    # maybe we can enable this in future
+    # we'd want to have consistent docstrings in future
+    "D",
+    "ANN002",
+    "ANN003",
+    "ANN101", # missing annotation for self?
+    # definitely enable these, maybe not in tests
+    "ANN102",
+    "ANN201",
+    "ANN202",
+    "ANN204",
+    "ANN205",
+    "ANN206",
+    "ANN401",
+    "PGH003",
+    "PGH004",
+    "RET504",
+    "RET505",
+    "RET506",
+    "RET507",
+    "RET503",
+    "BLE001",
+    "B008",
+    "N811",
+    "N804",
+    "N818",
+    # Variable `T` in function should be lowercase
+    # this seems a potential bug or opportunity for improvement in ruff
+    "N806",
+
+    # first argument should named self (found in tests)
+    "N805",
+
+    "N815",
+
+    # shadowing builtins
+    "A001",
+    "A002",
+    "A003",
+
+    "ARG001",
+    "ARG002",
+    "ARG003",
+    "ARG004",
+    "ARG005",
+    "FBT001",
+    "FBT002",
+    "FBT003",
+
+    "PT001",
+    "PT023",
+    "PTH123",
+
+    # this is pretty much handled by black
+    "E501",
+
+    # enable these, we have some in tests
+    "B006",
+    "PT004",
+    "PT007",
+    "PT011",
+    "PT012",
+    "PT015",
+    "PT017",
+    "C414",
+    "N802",
+
+    "SIM117",
+    "SIM102",
+
+    "F841",
+    "B027",
+    "B905",
+    "ISC001",
+
+    # same?
+    "S105",
+    "S106",
+
+    "DTZ003",
+    "DTZ005",
+
+    "RSE102",
+    "SLF001",
+
+    # in tests
+    "DTZ001",
+
+    "EM101",
+    "EM102",
+    "EM103",
+
+    "B904",
+    "B019",
+
+    "N801",
+    "N807",
+
+    # pandas
+    "PD",
+
+    "RUF012",
+    "PLC0105",
+    "FA102",
+
+    # code complexity
+    "C",
+    "C901",
+
+    # trailing commas
+    "COM812",
+
+    "PLR",
+    "INP",
+    "TRY",
+    "SIM300",
+    "SIM114",
+
+    "DJ008",
+    "TD002",
+    "TD003",
+    "FIX001",
+    "FIX002",
+    "FA100",
+
+    "RUF013"
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S102", "S104", "S324"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["fastapi-strawberry-graphql"]
+known-third-party = ["django", "graphql"]
+extra-standard-library = ["typing_extensions"]
+
+[tool.ruff.format]
+exclude =[
+    'tests/codegen/snapshots/',
+    'tests/cli/snapshots/'
+]

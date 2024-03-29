@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from typing import Literal
 from uuid import UUID
 
 import bcrypt
@@ -44,7 +45,7 @@ class TokenData(BaseModel):
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-def load_rsa_private_key_from_pem():
+def load_rsa_private_key_from_pem() -> bytes:
     with open("./private_key.pem", "rb") as pem_file:
         pem_data = pem_file.read()
 
@@ -64,7 +65,7 @@ def load_rsa_private_key_from_pem():
 private_key = load_rsa_private_key_from_pem()
 
 
-def load_rsa_public_key_from_private_key(private_key_bytes):
+def load_rsa_public_key_from_private_key(private_key_bytes: bytes) -> bytes:
     private_key = serialization.load_pem_private_key(
         private_key_bytes,
         password=None,
@@ -85,13 +86,13 @@ private_key_bytes = load_rsa_private_key_from_pem()
 public_key_bytes = load_rsa_public_key_from_private_key(private_key_bytes)
 
 
-def get_password_hash(password: str):
+def get_password_hash(password: str) -> str:
     return bcrypt.hashpw(password.encode("utf-8"), salt=bcrypt.gensalt(prefix=b"2a")).decode(
         "utf-8"
     )
 
 
-def verify_password(plain_password: str, hashed_password: str):
+def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 
@@ -101,7 +102,7 @@ async def get_user(username: str) -> UserModel:
         return UserModel(name=user.name, email=user.email, unique_id=user.unique_id)
 
 
-async def authenticate_user(username: str, password: str):
+async def authenticate_user(username: str, password: str) -> User | Literal[False]:
     user = await User.filter(name=username).first()
     if not user:
         return False
@@ -110,7 +111,7 @@ async def authenticate_user(username: str, password: str):
     return user
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
@@ -121,7 +122,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-async def get_current_user(info: Info):
+async def get_current_user(info: Info) -> UserModel | None:
     if "Authorization" not in info.context.get("request").headers:
         return None
 

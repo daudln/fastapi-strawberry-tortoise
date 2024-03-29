@@ -17,7 +17,7 @@ class ResponseObject:
 
     @classmethod
     def get_response(cls, response_id: int):
-        with open("assets/response_codes.json", "r") as file:
+        with open("assets/response_codes.json") as file:
             response_data = json.load(file)
 
         matching_response = next(
@@ -50,7 +50,7 @@ class PageObject:
         self.has_nex_page = has_nex_page
 
     @classmethod
-    def get_page(cls, page_obj):
+    def get_page(cls, page_obj: "PageObject"):
         return cls(
             number=page_obj.number,
             per_page=page_obj.per_page,

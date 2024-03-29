@@ -7,7 +7,6 @@ from dto.core import UserObject
 from dto.response import PageObject, Response
 from utils.auth import get_current_user
 from utils.paginator import Paginator
-from tortoise.expressions import Q
 
 
 @strawberry.type
@@ -41,10 +40,6 @@ class Query:
             return Response.get_response(response_id=10)
 
         return Response.get_response(response_id=1, data=CoreBuider.get_user_data(user.unique_id))
-
-    @strawberry.field
-    async def hello(self, info: Info, name: str | None = None) -> str:
-        return f"Hello {name or 'world'}"
 
     @strawberry.field
     async def get_me(self, info: Info) -> Response[UserObject]:

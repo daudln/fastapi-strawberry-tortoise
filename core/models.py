@@ -1,9 +1,9 @@
-from tortoise import fields
+from typing import Type
 
-from mixins.models import BaseModel
+from tortoise import fields
 from tortoise.signals import post_save
 
-from typing import Type
+from mixins.models import BaseModel
 
 
 class User(BaseModel):
@@ -21,8 +21,8 @@ class User(BaseModel):
 
 @post_save(User)
 async def send_welcome_message_for_new_user(
-    sender: "Type[User]", instance: User, created: bool, using_db, update_fields
-): ...
+    sender: "Type[User]", instance: User, created: bool, using_db: bool, update_fields: list
+) -> None: ...
 
 
 class Profile(BaseModel):

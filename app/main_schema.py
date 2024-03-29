@@ -1,8 +1,8 @@
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 
-from core.queries import Query as CoreQuery
 from core.mutations import Mutation as CoreMutation
+from core.queries import Query as CoreQuery
 
 
 class Query(CoreQuery):

@@ -22,7 +22,7 @@ ALGORITHM = CONFIG.get("ALGORITHM")
 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(CONFIG.get("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
-RSA_PRIVATE_KEY = CONFIG.get("RSA_PRIVATE_KEY")
+RSA_ENCRYPT_KEY = CONFIG.get("RSA_ENCRYPT_KEY")
 
 RSA_PUBLIC_KEY = CONFIG.get("RSA_PUBLIC_KEY")
 
@@ -51,7 +51,7 @@ def load_rsa_private_key_from_pem() -> bytes:
 
     private_key = serialization.load_pem_private_key(
         pem_data,
-        password=None,
+        password=bytes(RSA_ENCRYPT_KEY, "utf-8"),
         backend=default_backend(),
     ).private_bytes(
         encoding=serialization.Encoding.PEM,

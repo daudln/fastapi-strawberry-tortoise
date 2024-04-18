@@ -1,4 +1,5 @@
 import strawberry
+from strawberry.permission import PermissionExtension
 from strawberry.types import Info
 from tortoise.expressions import Q
 
@@ -9,12 +10,15 @@ from dto.core import ActivateUserInput, LoginInput, TokenObject, UserInput, User
 from dto.response import Response, ResponseObject
 from utils.auth import get_password_hash, login_for_access_token
 from utils.mail import send_mail
+from utils.permission import IsAuthorized
 from utils.validators import validate_email, validate_password
 
 
 @strawberry.type
 class Mutation:
-    @strawberry.mutation
+    @strawberry.mutation(
+        extensions=[PermissionExtension(permissions=[IsAuthorized(permissions=["create_user"])])]
+    )
     async def create_user_mutation(self, info: Info, input: UserInput) -> Response[UserObject]:
         if not validate_email(input.email):
             return Response.get_response(response_id=2)

@@ -16,7 +16,7 @@ class ResponseObject:
     message: str
 
     @classmethod
-    def get_response(cls, response_id: int):
+    def get_response(cls, response_id: int, custom_message: str | None = None):
         with open("assets/response_codes.json") as file:
             response_data = json.load(file)
 
@@ -25,7 +25,7 @@ class ResponseObject:
         )
         if matching_response:
             code = matching_response.get("code", "")
-            message = matching_response["message"]
+            message = custom_message if custom_message else matching_response["message"]
             status = matching_response["status"]
             return cls(id=response_id, code=code, status=status, message=message)
 
@@ -73,7 +73,8 @@ class Response(Generic[TData]):
     def get_response(
         cls,
         response_id: int,
+        custom_message: str | None = None,
         data: TData | None = None,
     ) -> "Response[TData]":
-        response = ResponseObject.get_response(response_id)
+        response = ResponseObject.get_response(response_id, custom_message)
         return cls(response=response, data=data)

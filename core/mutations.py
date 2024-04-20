@@ -1,9 +1,7 @@
 import strawberry
 from strawberry.permission import PermissionExtension
 from strawberry.types import Info
-from tortoise.expressions import Q
 
-from authentication.models import AccountActivationToken
 from builder.core import CoreBuider
 from core.models import User
 from dto.core import ActivateUserInput, LoginInput, TokenObject, UserInput, UserObject
@@ -17,7 +15,9 @@ from utils.validators import validate_email, validate_password
 @strawberry.type
 class Mutation:
     @strawberry.mutation(
-        extensions=[PermissionExtension(permissions=[IsAuthorized(permissions=["create_user"])])]
+        extensions=[
+            PermissionExtension(permissions=[IsAuthorized(permissions=["can_create_users"])])
+        ]
     )
     async def create_user_mutation(self, info: Info, input: UserInput) -> Response[UserObject]:
         if not validate_email(input.email):
@@ -29,34 +29,34 @@ class Mutation:
         if input.password != input.password_confirm:
             return Response.get_response(response_id=3)
 
-        if await User.filter(Q(name=input.name) | Q(email=input.email)).exists():
-            return Response.get_response(response_id=5)
+        # if await User.filter(Q(name=input.name) | Q(email=input.email)).exists():
+        #     return Response.get_response(response_id=5)
 
-        hashed_password = get_password_hash(input.password)
-        user = await User.create(name=input.name, email=input.email, password=hashed_password)
-        activation_token = await AccountActivationToken.create(user=user)
-        await send_mail(
-            to=[user.email],
-            body={
-                "name": user.name,
-                "activation_url": f"http://localhost:8000/{activation_token.unique_id!s}",
-            },
-            subject="Welcome to Task Manager",
-            template_name="emails/welcome.html",
-        )
-        return Response.get_response(response_id=1, data=CoreBuider.get_user_data(user.unique_id))
+        # hashed_password = get_password_hash(input.password)
+        # user = await User.create(name=input.name, email=input.email, password=hashed_password)
+        # # activation_token = await AccountActivationToken.create(user=user)
+        # await send_mail(
+        #     to=[user.email],
+        #     body={
+        #         "name": user.name,
+        #         "activation_url": f"http://localhost:8000/{user.unique_id}",
+        #     },
+        #     subject="Welcome to Task Manager",
+        #     template_name="emails/welcome.html",
+        # )
+        return Response.get_response(response_id=1)
 
     @strawberry.mutation
     async def activate_user_mutation(self, info: Info, input: ActivateUserInput) -> ResponseObject:
-        activation_token = await AccountActivationToken.filter(unique_id=input.token).first()
-        if not activation_token:
-            return Response.get_response(response_id=10)
+        # # activation_token = await AccountActivationToken.filter(unique_id=input.token).first()
+        # # if not activation_token:
+        # #     return Response.get_response(response_id=10)
 
-        if activation_token.is_used:
-            return Response.get_response(response_id=11)
-        user = activation_token.user
-        user.is_active = True
-        user.save()
+        # # if activation_token.is_used:
+        # #     return Response.get_response(response_id=11)
+        # user = activation_token.user
+        # user.is_active = True
+        # user.save()
         return Response.get_response(response_id=1)
 
     @strawberry.mutation

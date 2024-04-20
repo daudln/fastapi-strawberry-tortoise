@@ -47,8 +47,14 @@ class IsAuthorized(BasePermission):
         if not user:
             return False
 
+        user_permissions = [
+            "can_create_user",
+            "can_view_user",
+            "can_update_user",
+            "can_delete_user",
+        ]  # TODO: get permissions from user
         if self.permissions and not any(
-            permission in user.get("permissions", []) for permission in self.permissions
+            permission in user_permissions for permission in self.permissions
         ):
             return False
 

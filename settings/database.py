@@ -1,18 +1,18 @@
 from dotenv import dotenv_values
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-CONF = dotenv_values(".env")
+env = dotenv_values(".env")
 
-DB_URL = CONF.get("DB_URL")
+DB_URL = env.get("DB_URL")
 
-ORM = {
-    "connections": {"default": DB_URL},
-    "apps": {
-        "models": {
-            "models": [
-                "aerich",
-                "core.models",
-                "authentication.models",
-            ]
-        }
-    },
-}
+engine = create_async_engine(DB_URL, echo=True, future=True)
+
+Session = async_sessionmaker(bind=engine)
+
+
+def get_db():
+    try:
+        db = Session()
+        yield db
+    finally:
+        db.close()

@@ -1,5 +1,5 @@
 from tortoise import fields
-from tortoise.fields.base import CASCADE
+from tortoise.fields import CASCADE
 
 from mixins.models import BaseOneToOneModel
 

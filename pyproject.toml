@@ -1,5 +1,5 @@
 [tool.aerich]
-tortoise_orm = "settings.database.ORM"
+tortoise_orm = "app.settings.ORM"
 location = "./migrations"
 src_folder = "./."
 
@@ -17,18 +17,18 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aerich = "0.7.2"
-asyncpg = "0.29.0"
-bcrypt = "4.1.2"
-cryptography = "42.0.5"
-fastapi = "0.110.0"
-fastapi-mail = "1.4.1"
-fastapi-pagination = "0.12.21"
-pyjwt = "2.8.0"
-python-dotenv = "1.0.1"
-strawberry-graphql = "0.221.1"
-tortoise-orm = "0.20.0"
-uvicorn = "0.29.0"
+aerich = "^0.7.2"
+asyncpg = "^0.29.0"
+bcrypt = "^4.1.2"
+cryptography = "^42.0.5"
+fastapi = "^0.111.0"
+fastapi-mail = "^1.4.1"
+fastapi-pagination = "^0.12.24"
+pyjwt = "^2.8.0"
+python-dotenv = "^1.0.1"
+strawberry-graphql = "^0.227.3"
+uvicorn = "^0.29.0"
+tortoise-orm = "^0.20.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
@@ -65,7 +65,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
-    "tests/codegen/snapshots"
+    "tests/codegen/snapshots",
 ]
 
 [tool.ruff.lint]
@@ -207,7 +207,7 @@ ignore = [
     "FIX002",
     "FA100",
 
-    "RUF013"
+    "RUF013",
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -219,7 +219,4 @@ known-third-party = ["django", "graphql"]
 extra-standard-library = ["typing_extensions"]
 
 [tool.ruff.format]
-exclude =[
-    'tests/codegen/snapshots/',
-    'tests/cli/snapshots/'
-]
+exclude = ['tests/codegen/snapshots/', 'tests/cli/snapshots/']

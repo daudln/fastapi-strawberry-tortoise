@@ -1,4 +1,5 @@
 import strawberry
+from fastapi_pagination.ext.tortoise import paginate
 from strawberry.types import Info
 
 from builder.core import CoreBuider

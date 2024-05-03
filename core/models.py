@@ -1,33 +1,33 @@
-import enum
+from typing import Type
 
-from sqlalchemy import ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from tortoise import fields
+from tortoise.signals import post_save
 
 from mixins.models import BaseModel
 
 
-class ProfileType(enum.Enum):
-    ADMIN = "Admin"
-    NORMAL_USER = "Normal User"
-
-
 class User(BaseModel):
-    __tablename__ = "users"
+    name = fields.CharField(max_length=200)
+    email = fields.CharField(max_length=200)
+    password = fields.CharField(max_length=200)
+    is_active = fields.BooleanField(default=False)
 
-    email: Mapped[str] = mapped_column(String(40), unique=True)
-    password: Mapped[str] = mapped_column(String(200))
-    profile: Mapped["Profile"] = relationship(back_populates="user", uselist=False)
-
-    def __repr__(self) -> str:
+    def __str__(self):
         return self.name
+
+    class Meta:
+        table = "users"
+
+
+@post_save(User)
+async def send_welcome_message_for_new_user(
+    sender: "Type[User]", instance: User, created: bool, using_db: bool, update_fields: list
+) -> None: ...
 
 
 class Profile(BaseModel):
-    __tablename__ = "profiles"
-
-    first_name: Mapped[str] = mapped_column(String(20))
-    last_name: Mapped[str] = mapped_column(String(20))
-    phone_number: Mapped[str] = mapped_column(String(12), nullable=True)
-    profile_type: Mapped[ProfileType] = mapped_column(default=ProfileType.NORMAL_USER)
-    user_id = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship(back_populates="profile", uselist=False)
+    first_name = fields.CharField(max_length=200)
+    last_name = fields.CharField(max_length=200)
+    address = fields.CharField(max_length=200)
+    phone_number = fields.CharField(max_length=200)
+    user = fields.OneToOneField("models.User", related_name="profile", on_delete=fields.CASCADE)

@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     SECRET_KEY: str
     ALGORITHM: str
+    RSA_ENCRYPT_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     MAIL_USERNAME: str
     MAIL_PASSWORD: str

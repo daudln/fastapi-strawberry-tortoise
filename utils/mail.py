@@ -23,8 +23,8 @@ conf = ConnectionConfig(
     MAIL_FROM_NAME=CONF.get("MAIL_FROM_NAME"),
     MAIL_STARTTLS=CONF.get("MAIL_STARTTLS"),
     MAIL_SSL_TLS=CONF.get("MAIL_SSL_TLS"),
-    USE_CREDENTIALS=CONF.get("USE_CREDENTIALS"),
-    VALIDATE_CERTS=CONF.get("VALIDATE_CERTS"),
+    USE_CREDENTIALS=CONF.get("USE_CREDENTIALS")=="True",
+    VALIDATE_CERTS=CONF.get("VALIDATE_CERTS")=="True",
     TEMPLATE_FOLDER=Path(__file__).parent.parent / "templates/",
 )
 

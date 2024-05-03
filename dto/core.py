@@ -2,7 +2,6 @@ from uuid import UUID
 
 import strawberry
 from pydantic import BaseModel, EmailStr
-from tortoise.contrib.pydantic.creator import pydantic_model_creator
 
 from core.models import User
 from dto.response import ResponseObject
@@ -22,9 +21,6 @@ class UserInput:
     email: str
     password: str
     password_confirm: str
-
-
-GetUser = pydantic_model_creator(User, name="UserGet", exclude=("password", "password_confirm"))
 
 
 @strawberry.type

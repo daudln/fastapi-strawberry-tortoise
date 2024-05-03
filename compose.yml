@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16.2-alpine3.18
+    image: postgres:16.2-alpine3.19
     ports:
       - "5430:5432"
     container_name: fastapi-db
